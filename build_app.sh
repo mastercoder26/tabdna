@@ -14,6 +14,8 @@ rm -rf "${APP_DIR}"
 mkdir -p "${MACOS_DIR}"
 mkdir -p "${RESOURCES_DIR}"
 
+swift Scripts/MakeAppIcon.swift "${RESOURCES_DIR}"
+
 RELEASE_BIN=$(swift build -c release --show-bin-path)/TabDNA
 cp "${RELEASE_BIN}" "${MACOS_DIR}/${APP_NAME}"
 chmod +x "${MACOS_DIR}/${APP_NAME}"
@@ -43,6 +45,8 @@ cat <<EOF > "${CONTENTS_DIR}/Info.plist"
     <string>14.0</string>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <key>CFBundleIconFile</key>
+    <string>TabDNA</string>
     <key>NSAppleEventsUsageDescription</key>
     <string>TabDNA uses AppleScript to inspect active tabs in Comet, Google Chrome, and Safari to construct your local browsing graph.</string>
 </dict>
