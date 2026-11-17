@@ -1,8 +1,10 @@
 #!/bin/bash
 set -e
 
+cd "$(dirname "$0")"
+
 echo "Building TabDNA for macOS..."
-swift build -c release
+swift build -c release --arch arm64 --arch x86_64
 
 APP_NAME="TabDNA"
 APP_DIR="${APP_NAME}.app"
@@ -16,7 +18,7 @@ mkdir -p "${RESOURCES_DIR}"
 
 swift Scripts/MakeAppIcon.swift "${RESOURCES_DIR}"
 
-RELEASE_BIN=$(swift build -c release --show-bin-path)/TabDNA
+RELEASE_BIN=$(swift build -c release --arch arm64 --arch x86_64 --show-bin-path)/TabDNA
 cp "${RELEASE_BIN}" "${MACOS_DIR}/${APP_NAME}"
 chmod +x "${MACOS_DIR}/${APP_NAME}"
 
@@ -52,5 +54,10 @@ cat <<EOF > "${CONTENTS_DIR}/Info.plist"
 </dict>
 </plist>
 EOF
+
+# A local ad-hoc signature makes both architectures internally verifiable.
+# Public distribution still requires Developer ID signing and notarization.
+codesign --force --sign - "${APP_DIR}"
+codesign --verify --deep --strict "${APP_DIR}"
 
 echo "Built $(pwd)/${APP_DIR}"

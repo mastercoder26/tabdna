@@ -6,7 +6,10 @@ A native macOS app that turns browsing activity into connected trails. Revisit a
 
 Requires macOS 14 or later and Swift 6 to build.
 
-- Run `sh build_app.sh` to build a release and generate `TabDNA.app`.
+- Download the universal DMG for Apple silicon and Intel Macs from [GitHub Releases](https://github.com/mastercoder26/tabdna/releases/latest), open it, and drag TabDNA into Applications.
+- The current release is ad-hoc signed and is not notarized by Apple. macOS Gatekeeper may block the first launch; after attempting to open it, use System Settings → Privacy & Security → Open Anyway if you trust the download.
+- Run `sh build_app.sh` to build a universal release and generate `TabDNA.app`.
+- Run `sh build_dmg.sh` to build the app and a verified DMG with a SHA-256 checksum in `dist/`.
 - Open the generated `TabDNA.app` to run the application.
 - Run `swift run TabDNA` during development.
 - Run `swift test` to run the isolated core and usability regression tests.
